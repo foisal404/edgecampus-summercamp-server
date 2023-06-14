@@ -32,6 +32,25 @@ async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
+    const userCollection = client.db("edgeCampus").collection("users");
+    app.get('/users',async(req,res)=>{
+        const cursor =await userCollection.find().toArray();
+        res.send(cursor);
+    })
+    app.post('/user',async(req,res)=>{
+        const data=req.body;
+        // console.log(data.email);
+        const query = { email: data.email };
+        const isExiset = await userCollection.findOne(query);
+        if(isExiset){
+            res.send([])
+        }
+        else{
+            const result = await userCollection.insertOne(data);
+            res.send(result)
+        }
+
+    })
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
