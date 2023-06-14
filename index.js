@@ -35,6 +35,14 @@ async function run() {
     const userCollection = client.db("edgeCampus").collection("users");
 
     //users api
+    app.get('/users/role/:email', async (req, res) => {
+        const email = req.params.email;
+        const query = { email: email }
+        const user = await userCollection.findOne(query);
+        const result = { role: user?.role|| "student"}
+        console.log(result);
+        res.send(result);
+      })
     app.patch('/users/admin/:id', async (req, res) => {
         const id = req.params.id;
         console.log(id);
