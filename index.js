@@ -41,13 +41,18 @@ async function run() {
       const result = await classCollection.insertOne(data);
       res.send(result)
     })
+    app.get('/classes',async(req,res)=>{
+      const query=req.query;
+      const cursor =await classCollection.find().toArray();
+      res.send(cursor)
+    })
     //users api
     app.get('/users/role/:email', async (req, res) => {
         const email = req.params.email;
         const query = { email: email }
         const user = await userCollection.findOne(query);
         const result = { role: user?.role|| "student"}
-        console.log(result);
+        // console.log(result);
         res.send(result);
       })
     app.patch('/users/admin/:id', async (req, res) => {
