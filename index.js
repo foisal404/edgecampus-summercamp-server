@@ -33,7 +33,14 @@ async function run() {
     // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
     const userCollection = client.db("edgeCampus").collection("users");
+    const classCollection = client.db("edgeCampus").collection("classes");
 
+    //class api
+    app.post('/class',async(req,res)=>{
+      const data=req.body;
+      const result = await classCollection.insertOne(data);
+      res.send(result)
+    })
     //users api
     app.get('/users/role/:email', async (req, res) => {
         const email = req.params.email;
