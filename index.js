@@ -42,17 +42,15 @@ async function run() {
       res.send(result)
     })
     app.get('/classes',async(req,res)=>{
-      const data=req.query;
-      const query = { instructorEmail: data.email }
-      console.log(query);
-      if(query){
-        const cursor =await classCollection.find(query).toArray();
-        res.send(cursor)
-      }
-      else{
-        const cursor =await classCollection.find().toArray();
-        res.send(cursor)
-      }
+      const cursor =await classCollection.find().toArray();
+      res.send(cursor)
+      
+    })
+    app.get('/class/:email',async(req,res)=>{
+      const data=req.params.email;
+      let query = {instructorEmail: data};
+      const cursor =await classCollection.find(query).toArray();
+      res.send(cursor)
     })
     //users api
     app.get('/users/role/:email', async (req, res) => {
