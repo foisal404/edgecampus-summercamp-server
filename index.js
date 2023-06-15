@@ -36,6 +36,19 @@ async function run() {
     const classCollection = client.db("edgeCampus").collection("classes");
 
     //class api
+    
+    app.patch('/class/deny/:id', async (req, res) => {
+      const id=req.params.id;
+      const filter = { _id: new ObjectId(id) };
+      const updateDoc = {
+        $set: {
+          status: 'denied'
+        },
+      };
+      const result = await classCollection.updateOne(filter, updateDoc);
+      res.send(result);
+
+    })
     app.patch('/class/approve/:id', async (req, res) => {
       const id=req.params.id;
       const filter = { _id: new ObjectId(id) };
