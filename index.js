@@ -8,13 +8,20 @@ const port = process.env.PORT || 5000;
 //middleware
 // app.use(cors())
 
-const corsConfig = {
-  origin: '*',
-  credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE']
-  }
-  app.use(cors(corsConfig))
-  app.options("", cors(corsConfig))
+// const corsConfig = {
+//   origin: '*',
+//   credentials: true,
+//   methods: ['GET', 'POST', 'PUT', 'DELETE']
+//   }
+//   app.use(cors(corsConfig))
+//   app.options("", cors(corsConfig))
+
+  const corsOptions ={
+    origin:'*',
+    credentials:true,
+    optionSuccessStatus:200,
+    }
+    app.use(cors(corsOptions))
 app.use(express.json())
 
 
