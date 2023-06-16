@@ -1,13 +1,21 @@
 const express = require('express');
+const cors = require('cors');
 const app = express()
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 require('dotenv').config()
-const port = process.env.PORT||5000
+const port = process.env.PORT || 5000;
 
 //middleware
-const cors = require('cors');
-app.use(cors())
-app.use(express.json())
+// app.use(cors())
 
+const corsConfig = {
+  origin: '*',
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE']
+  }
+  app.use(cors(corsConfig))
+  app.options("", cors(corsConfig))
+app.use(express.json())
 
 
 app.get('/', (req, res) => {
@@ -16,7 +24,7 @@ app.get('/', (req, res) => {
 
 
 
-const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
+
 const uri = `mongodb+srv://${process.env.USER}:${process.env.PASS}@cluster0.pxrxjz6.mongodb.net/?retryWrites=true&w=majority`;
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
@@ -31,7 +39,7 @@ const client = new MongoClient(uri, {
 async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
-    await client.connect();
+    // await client.connect();
     const userCollection = client.db("edgeCampus").collection("users");
     const classCollection = client.db("edgeCampus").collection("classes");
     const cartCollection = client.db("edgeCampus").collection("cart");
