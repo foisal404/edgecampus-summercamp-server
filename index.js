@@ -34,9 +34,40 @@ async function run() {
     await client.connect();
     const userCollection = client.db("edgeCampus").collection("users");
     const classCollection = client.db("edgeCampus").collection("classes");
+    const cartCollection = client.db("edgeCampus").collection("cart");
 
+
+    //cart api
+    app.patch('/cart/:id', async (req, res) => {
+      const id=req.params.id;
+      const filter = { _id: new ObjectId(id) };
+      const updateDoc = {
+        $set: {
+          "enroll":"true"
+        },
+      };
+      // console.log(updateDoc);
+      const result = await cartCollection.updateOne(filter, updateDoc);
+      res.send(result);
+    })
+    app.delete('/carts/:id',async(req,res)=>{
+      const id=req.params.id
+      const query = { _id: new ObjectId(id) };
+      const result = await cartCollection.deleteOne(query);
+      res.send(result)
+    })
+    app.get('/carts',async(req,res)=>{
+      const cursor =await cartCollection.find().toArray();
+      res.send(cursor)
+      
+    })
+    app.post('/cart',async(req,res)=>{
+      const data=req.body;
+      const result = await cartCollection.insertOne(data);
+      res.send(result)
+      // console.log(data);
+    })
     //class api
-
     app.patch('/class/feedback/:id', async (req, res) => {
       const data=req.body;
       const id=req.params.id;
@@ -47,6 +78,22 @@ async function run() {
         },
       };
       // console.log(updateDoc);
+      const result = await classCollection.updateOne(filter, updateDoc);
+      res.send(result);
+    })
+
+    app.patch('/class/:id', async (req, res) => {
+      const id=req.params.id;
+      const filter = { _id: new ObjectId(id) };
+      const isExiset = await classCollection.findOne(filter);
+      // console.log(isExiset);
+      const updateDoc = {
+        $set: {
+          "seats": parseInt(isExiset.seats)-1,
+          "students": parseInt(isExiset.students)+1
+        },
+      };
+      console.log(updateDoc);
       const result = await classCollection.updateOne(filter, updateDoc);
       res.send(result);
     })
@@ -80,9 +127,8 @@ async function run() {
       res.send(result)
     })
     app.get('/classes',async(req,res)=>{
-      const cursor =await classCollection.find().toArray();
+      const cursor =await classCollection.find().sort({ "students": -1 }).toArray();
       res.send(cursor)
-      
     })
     app.get('/class/:email',async(req,res)=>{
       const data=req.params.email;
