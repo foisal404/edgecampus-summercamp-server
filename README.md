@@ -1,4 +1,4 @@
-## Welcome to EdgeCampus Summer Sports Academy!
+## Welcome to EdgeCampus Summer Sports camp!
 ## server for EdgeCampus
 
 - use express js framework of modejs
