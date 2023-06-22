@@ -1,5 +1,5 @@
 ## Welcome to EdgeCampus Summer Sports camp!
-## server for EdgeCampus vercel
+## server for EdgeCampus vercel deploy
 
 - use express js framework of modejs
 - use some middleware
